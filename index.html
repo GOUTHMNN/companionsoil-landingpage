@@ -47,19 +47,29 @@
         }
     </script>
     <style>
-        .parallax {
+                .parallax {
+            /* Desktop = real parallax */
             background-attachment: fixed;
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
+            min-height: 100vh;
         }
 
-        @media (max-width: 768px) {
+        /* Tablet & Mobile = switch to scroll (this stops text being cut off) */
+        @media (max-width: 1024px) {
             .parallax {
-                background-attachment: scroll;
+                background-attachment: scroll !important;
+                background-position: center top;
             }
         }
 
+        /* Extra safety for very small phones */
+        @media (max-width: 480px) {
+            .parallax {
+                background-attachment: scroll !important;
+            }
+        }
         .gradient-text {
             background: linear-gradient(135deg, #D4AF37 0%, #F5E6B3 30%, #D4AF37 60%, #013220 100%);
             -webkit-background-clip: text;
@@ -407,3 +417,4 @@
 
 
 </html>
+
