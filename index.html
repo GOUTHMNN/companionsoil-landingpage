@@ -4,417 +4,586 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CompanionSoil AI – AWS Global Champion | Soil Is Infrastructure</title>
-    <meta name="description"
-        content="CompanionSoil AI: AWS Generative AI Global Hackathon Champion. Reducing chemical fertilizers by up to 50%, restoring soil health, and increasing yields through precision AI.">
+    <title>CompanionSoil AI</title>
+    <!-- Premium Custom Favicon: Glowing Leaf 
+         Concept: High-fidelity leaf silhouette with a subtle outer glow for vitality.
+    -->
+    <link rel="icon"
+        href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%231B4D3E" stop-opacity="0.3"/><stop offset="100%" stop-color="%231B4D3E" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="32" fill="url(%23glow)"/><path d="M32 58v-8C18 50 12 30 32 4c20 26 14 46 0 46z" fill="%231B4D3E"/><path d="M32 50V14" stroke="%23F4F4F0" stroke-width="0.5" stroke-opacity="0.5" fill="none"/></svg>'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        serif: ['"Playfair Display"', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        earth: '#013220',
-                        earthlight: '#2E5C2E',
-                        gold: '#D4AF37',
-                        dark: '#0A0A0A',
-                        overlay: 'rgba(10,10,10,0.92)',
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 1.8s ease-out forwards',
-                        'fade-up': 'fadeUp 1.6s ease-out forwards',
-                        'glow-pulse': 'glowPulse 4s ease-in-out infinite alternate',
-                        'float-slow': 'floatSlow 25s infinite linear',
-                        'text-reveal': 'textReveal 2s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(50px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        fadeUp: { '0%': { opacity: '0', transform: 'translateY(80px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        glowPulse: { '0%': { boxShadow: '0 0 30px rgba(212,175,55,0.4)' }, '100%': { boxShadow: '0 0 60px rgba(212,175,55,0.8)' } },
-                        floatSlow: { '0%': { transform: 'translateY(100vh) rotate(0deg)' }, '100%': { transform: 'translateY(-100vh) rotate(360deg)' } },
-                        textReveal: { '0%': { opacity: '0', clipPath: 'inset(100% 0 0 0)' }, '100%': { opacity: '1', clipPath: 'inset(0% 0 0 0)' } },
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-                .parallax {
-            /* Desktop = real parallax */
-            background-attachment: fixed;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            min-height: 100vh;
+        :root {
+            --color-bg: #F4F4F0;
+            --color-text: #1a1a1a;
+            --color-text-light: #555555;
+            --color-primary: #1B4D3E;
+            --color-accent: #E8EBE4;
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Manrope', sans-serif;
+            --max-width: 1200px;
         }
 
-        /* Tablet & Mobile = switch to scroll (this stops text being cut off) */
-        @media (max-width: 1024px) {
-            .parallax {
-                background-attachment: scroll !important;
-                background-position: center top;
-            }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Extra safety for very small phones */
-        @media (max-width: 480px) {
-            .parallax {
-                background-attachment: scroll !important;
-            }
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #D4AF37 0%, #F5E6B3 30%, #D4AF37 60%, #013220 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        html {
+            scroll-behavior: smooth;
         }
 
-        .particle {
-            position: absolute;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.6), transparent 70%);
-            border-radius: 50%;
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Scroll Animation Layer --- */
+        #growth-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
-            animation: floatSlow var(--duration) linear infinite;
+            z-index: -1;
+            opacity: 0.15;
+            /* Subtle branding */
         }
 
-        .luxury-border {
-            border: 1px solid rgba(212, 175, 55, 0.35);
+        .tree-leaf {
+            transform-box: fill-box;
+            transform-origin: center center;
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
+            /* Smooth fade in */
         }
 
-        .section-line {
-            height: 1px;
-            background: linear-gradient(to right, transparent, #D4AF37, transparent);
-            opacity: 0.6;
+        /* --- Typography --- */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-display);
+            color: var(--color-primary);
+            line-height: 1.2;
         }
 
-        .hero-bg {
-            background: linear-gradient(rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0.95)), url('https://images.pexels.com/photos/235725/pexels-photo-235725.jpeg?auto=compress&cs=tinysrgb&w=1920') center/cover no-repeat;
+        h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            margin-bottom: 32px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 1.125rem;
+            color: var(--color-text-light);
+            margin-bottom: 24px;
+            max-width: 650px;
+        }
+
+        .text-lead {
+            font-size: clamp(1.25rem, 4vw, 1.5rem);
+            color: var(--color-text);
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+            display: block;
+            font-weight: 600;
+        }
+
+        /* --- Layout --- */
+        section {
+            padding: 100px 24px;
+            position: relative;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            gap: 40px;
+        }
+
+        /* Desktop defaults */
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 20px;
+            }
+
+            /* Reduce padding */
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            /* Stack everything */
+
+            /* Adjust Tree for Mobile */
+            #growth-canvas {
+                opacity: 0.1;
+                /* Even subtler on phone to avoid text conflict */
+            }
+        }
+
+        /* --- Components --- */
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background-color: var(--color-primary);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-primary);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--color-primary);
+        }
+
+        .card {
+            padding: 32px;
+            border-top: 1px solid rgba(27, 77, 62, 0.2);
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--color-primary);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* --- Sections --- */
+        header {
+            padding: 32px 24px;
+            /* Sticky header for better UX on long scroll */
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(244, 244, 240, 0.9);
+            /* Blur/Transparent bg */
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding-top: 140px;
+        }
+
+        .quote-section {
+            background-color: var(--color-accent);
+            text-align: center;
+        }
+
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: clamp(1.25rem, 3vw, 2.2rem);
+            font-style: italic;
+            color: var(--color-primary);
+        }
+
+        footer {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Founder Image Styling */
+        .founder-img-container {
+            position: relative;
+            margin-top: 40px;
+        }
+
+        .founder-img {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 3/4;
+            /* Portrait ratio assumption for headshots */
+            object-fit: cover;
+            border-radius: 2px;
+            /* Neo-luxury offset frame effect using box-shadow */
+            box-shadow: 20px 20px 0 rgba(232, 235, 228, 1),
+                /* Matches -color-accent */
+                20px 20px 0 2px var(--color-primary);
+            /* Thin border on the offset */
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+
+        .founder-img:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 25px 25px 0 rgba(232, 235, 228, 1),
+                25px 25px 0 2px var(--color-primary);
+        }
+
+        @media (min-width: 768px) {
+            .founder-img-container {
+                margin-top: 0;
+                display: flex;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 
-<body class="bg-dark text-white overflow-x-hidden">
+<body>
 
-    <!-- Floating Particles -->
-    <div class="fixed inset-0 pointer-events-none z-10">
-        <div class="particle-container"></div>
-    </div>
+    <!-- 
+      Enhanced SVG: A more complex, organic tree structure.
+      ViewBox 0 0 800 800. 
+      Positions mapped to ensure it grows from bottom-right (approx 800,800) upwards/leftwards.
+    -->
+    <svg id="growth-canvas" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+        <g stroke="#1B4D3E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
 
-    <!-- Fixed Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-dark/95 backdrop-blur-2xl border-b border-gold/20">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-            <div class="text-3xl md:text-4xl font-serif gradient-text tracking-wider">CompanionSoil AI</div>
-            <div class="hidden lg:flex space-x-12 text-lg font-medium">
-                <a href="#hero" class="hover:text-gold transition">Home</a>
-                <a href="#crisis" class="hover:text-gold transition">Crisis</a>
-                <a href="#solution" class="hover:text-gold transition">Solution</a>
-                <a href="#victory" class="hover:text-gold transition">Victory</a>
-                <a href="#founder" class="hover:text-gold transition">Founder</a>
-                <a href="#invest" class="hover:text-gold transition">Invest</a>
-            </div>
+            <!-- MAIN TRUNK: Curving from bottom-right towards center-left -->
+            <path class="growth-branch" data-start="0.0" data-speed="1.0"
+                d="M 850 850 C 700 700, 600 600, 400 300 C 350 200, 300 100, 100 50" stroke-width="3" />
+
+            <!-- BRANCH 1 (Lower Right) -->
+            <path class="growth-branch" data-start="0.1" data-speed="1.2" d="M 650 650 C 750 550, 800 400, 750 300" />
+            <!-- Leaves for B1 -->
+            <path class="tree-leaf" data-trigger="0.3" d="M 750 300 c -2 -4 -6 -6 -10 -6 c 4 10 6 14 10 6 z"
+                fill="#1B4D3E" stroke="none" />
+            <path class="tree-leaf" data-trigger="0.32" d="M 780 400 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
+                fill="#1B4D3E" stroke="none" />
+
+            <!-- BRANCH 2 (Mid Left) -->
+            <path class="growth-branch" data-start="0.2" data-speed="1.3" d="M 500 450 C 400 450, 200 500, 150 400" />
+            <!-- Leaves for B2 -->
+            <path class="tree-leaf" data-trigger="0.45" d="M 150 400 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
+                fill="#1B4D3E" stroke="none" />
+            <path class="tree-leaf" data-trigger="0.48" d="M 250 480 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
+                fill="#1B4D3E" stroke="none" />
+
+            <!-- BRANCH 3 (Upper Center) -->
+            <path class="growth-branch" data-start="0.4" data-speed="1.5" d="M 400 300 C 450 200, 550 150, 600 100" />
+            <!-- Leaves for B3 -->
+            <path class="tree-leaf" data-trigger="0.65" d="M 600 100 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
+                fill="#1B4D3E" stroke="none" />
+            <path class="tree-leaf" data-trigger="0.7" d="M 500 180 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
+                fill="#1B4D3E" stroke="none" />
+
+            <!-- BRANCH 4 (Top Left Finisher) -->
+            <path class="growth-branch" data-start="0.5" data-speed="1.4" d="M 300 100 C 200 50, 100 50, 50 20" />
+            <!-- Leaves for B4 -->
+            <path class="tree-leaf" data-trigger="0.8" d="M 50 20 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z" fill="#1B4D3E"
+                stroke="none" />
+            <path class="tree-leaf" data-trigger="0.85" d="M 150 60 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
+                fill="#1B4D3E" stroke="none" />
+
+        </g>
+    </svg>
+
+    <header>
+        <div class="logo">
+            <svg class="logo-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="header-glow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#1B4D3E" stop-opacity="0.3" />
+                        <stop offset="100%" stop-color="#1B4D3E" stop-opacity="0" />
+                    </radialGradient>
+                </defs>
+                <circle cx="32" cy="32" r="32" fill="url(#header-glow)" />
+                <path d="M32 58v-8C18 50 12 30 32 4c20 26 14 46 0 46z" fill="#1B4D3E" />
+                <path d="M32 50V14" stroke="#F4F4F0" stroke-width="0.5" stroke-opacity="0.4" fill="none" />
+            </svg>
+            CompanionSoil AI
         </div>
-    </nav>
+    </header>
 
-    <!-- HERO -->
-    <section id="hero"
-        class="relative min-h-screen flex items-center justify-center text-center px-6 pt-24 hero-bg parallax">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/95 to-dark"></div>
-        <div class="relative z-20 max-w-7xl mx-auto">
-            <!-- Champion Badge -->
-            <div class="absolute top-24 right-6 md:top-32 md:right-12 z-50">
-
-            </div>
-
-            <h1 class="text-6xl md:text-9xl font-serif font-black leading-tight gradient-text mb-10 animate-fade-in">
-                CompanionSoil AI
-            </h1>
-
-            <div class="space-y-10 text-lg md:text-2xl max-w-5xl mx-auto font-light leading-relaxed">
-                <p class="animate-fade-in" style="animation-delay: 0.5s;">
-                    “The core problem is simple but urgent: soil degradation threatens every aspect of life on Earth.
-                    Overuse of chemical fertilizers is destroying the soil’s natural fertility. If soil collapses, crops
-                    collapse, food collapses, oxygen collapses — life itself collapses.”
-                </p>
-                <p class="animate-fade-in" style="animation-delay: 1s;">
-                    CompanionSoil AI reduces chemical fertilizer usage by up to 50%, restores microbial ecosystems, and
-                    increases crop productivity — all while lowering costs for farmers.
-                </p>
-                <p class="animate-fade-in italic font-medium" style="animation-delay: 1.5s;">
-                    “This is not incremental improvement. This is a paradigm shift. Most people treat soil like dirt. I
-                    treat it like the most critical infrastructure on the planet.”
-                    <span class="block mt-4 text-gold text-xl">— Goutham Satheesh, Founder</span>
-                </p>
-            </div>
-
-            <div class="mt-20 flex flex-col md:flex-row gap-8 justify-center animate-fade-up"
-                style="animation-delay: 2s;">
-                <a href="#solution"
-                    class="bg-gold hover:bg-earthlight text-dark px-14 py-6 rounded-full text-2xl font-bold transition-all transform hover:scale-110 shadow-2xl">
-                    Discover the Revolution
-                </a>
-                <a href="#invest"
-                    class="border-4 border-gold hover:bg-gold hover:text-dark text-gold px-14 py-6 rounded-full text-2xl font-bold transition-all transform hover:scale-110 shadow-2xl">
-                    Investment Inquiry
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-line max-w-5xl mx-auto my-24"></div>
-
-    <!-- The Crisis -->
-    <section id="crisis" class="relative py-40 parallax"
-        style="background-image: url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1920&q=80');">
-        <div class="absolute inset-0 bg-overlay"></div>
-        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-7xl md:text-9xl font-serif font-black gradient-text mb-16 animate-fade-in">The Silent
-                Collapse</h2>
-            <p class="text-2xl md:text-4xl max-w-5xl mx-auto font-light leading-relaxed mb-20 animate-fade-in"
-                style="animation-delay: 0.5s;">
-                We are losing soil 40 times faster than nature can rebuild it.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <div
-                    class="bg-dark/90 backdrop-blur-xl luxury-border p-14 rounded-3xl animate-fade-up hover:scale-105 transition">
-                    <h3 class="text-5xl font-serif gradient-text mb-6">24 Billion Tons</h3>
-                    <p class="text-2xl font-light">Fertile soil lost every year</p>
-                </div>
-                <div class="bg-dark/90 backdrop-blur-xl luxury-border p-14 rounded-3xl animate-fade-up"
-                    style="animation-delay: 0.2s;">
-                    <h3 class="text-5xl font-serif gradient-text mb-6">$400 Billion</h3>
-                    <p class="text-2xl font-light">Annual global economic damage</p>
-                </div>
-                <div class="bg-dark/90 backdrop-blur-xl luxury-border p-14 rounded-3xl animate-fade-up"
-                    style="animation-delay: 0.4s;">
-                    <h3 class="text-5xl font-serif gradient-text mb-6">60 Harvests Left</h3>
-                    <p class="text-2xl font-light">Before much farmland becomes barren</p>
-                </div>
-            </div>
+    <section class="hero">
+        <div class="container">
+            <span class="text-sm">AWS Global Champion 2025</span>
+            <h1>Soil Is Infrastructure</h1>
+            <p class="text-lead">The core problem is simple but urgent: soil degradation threatens every aspect of life
+                on Earth. If soil collapses, life itself collapses.</p>
+            <br>
+            <p>CompanionSoil AI reduces chemical fertilizer usage by up to 50%, restores microbial ecosystems, and
+                increases crop productivity — all while lowering costs for farmers.</p>
+            <br>
+            <a href="mailto:gouthmnn@gmail.com" class="btn">Request Investor Deck</a>
         </div>
     </section>
 
-    <div class="section-line max-w-5xl mx-auto my-24"></div>
-
-    <!-- Solution -->
-    <section id="solution" class="relative py-40 parallax" class="parallax absolute inset-0" style="background-image: url('background.jpg');
-                background-position: center;
-                background-size: cover;
-                background-repeat: no-repeat;">
+    <section class="quote-section">
+        <div class="container">
+            <blockquote class="quote-text">
+                “This is not incremental improvement. This is a paradigm shift. Most people treat soil like dirt. I
+                treat it like the most critical infrastructure on the planet.”
+            </blockquote>
+            <span class="quote-author">— Goutham Satheesh, Founder</span>
         </div>
-        <div class="absolute inset-0 bg-overlay"></div>
-        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-7xl md:text-9xl font-serif font-black gradient-text mb-20 animate-fade-in">AI-Powered
-                Regeneration</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
-                <div
-                    class="bg-dark/90 backdrop-blur-xl luxury-border p-12 rounded-3xl hover:scale-110 transition duration-500 animate-fade-up">
-                    <i class="fas fa-brain text-gold text-8xl mb-8"></i>
-                    <h3 class="text-4xl font-serif gradient-text mb-4">Generative Soil AI</h3>
-                    <p class="text-xl">Real-time microbial & nutrient modeling</p>
+    </section>
+
+    <section id="crisis">
+        <div class="container">
+            <span class="text-sm">The Silent Collapse</span>
+            <h2>Losing Soil Faster Than Nature Rebuilds</h2>
+            <p>We are losing soil 40 times faster than nature can rebuild it. The cost of inaction is catastrophic.</p>
+
+            <div class="grid grid-3" style="margin-top: 60px;">
+                <div class="card">
+                    <span class="stat-number">24B</span>
+                    <h4>Tons of Soil Lost</h4>
+                    <p style="font-size: 0.9rem;">Fertile soil lost every year globally.</p>
                 </div>
-                <div class="bg-dark/90 backdrop-blur-xl luxury-border p-12 rounded-3xl hover:scale-110 transition duration-500 animate-fade-up"
-                    style="animation-delay: 0.2s;">
-                    <i class="fas fa-vial text-gold text-8xl mb-8"></i>
-                    <h3 class="text-4xl font-serif gradient-text mb-4">50% Less Chemicals</h3>
-                    <p class="text-xl">Precision inputs, zero waste</p>
+                <div class="card">
+                    <span class="stat-number">$400B</span>
+                    <h4>Economic Damage</h4>
+                    <p style="font-size: 0.9rem;">Annual global loss due to degradation.</p>
                 </div>
-                <div class="bg-dark/90 backdrop-blur-xl luxury-border p-12 rounded-3xl hover:scale-110 transition duration-500 animate-fade-up"
-                    style="animation-delay: 0.4s;">
-                    <i class="fas fa-chart-line text-gold text-8xl mb-8"></i>
-                    <h3 class="text-4xl font-serif gradient-text mb-4">30% Higher Yields</h3>
-                    <p class="text-xl">Data-driven growth optimization</p>
-                </div>
-                <div class="bg-dark/90 backdrop-blur-xl luxury-border p-12 rounded-3xl hover:scale-110 transition duration-500 animate-fade-up"
-                    style="animation-delay: 0.6s;">
-                    <i class="fas fa-globe text-gold text-8xl mb-8"></i>
-                    <h3 class="text-4xl font-serif gradient-text mb-4">Planet-Scale</h3>
-                    <p class="text-xl">Deployed in 120+ countries</p>
+                <div class="card">
+                    <span class="stat-number">60</span>
+                    <h4>Harvests Left</h4>
+                    <p style="font-size: 0.9rem;">Before farmland becomes critically barren.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="section-line max-w-5xl mx-auto my-24"></div>
-
-    <!-- Victory – Official Results (Luxury Edition) -->
-    <section id="victory" class="relative py-48 overflow-hidden">
-        <!-- Trophy Parallax Background -->
-        <div class="parallax absolute inset-0" style="background-image: url('https://images.unsplash.com/photo-1511512578047-d82ccd0a1b9f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=90'); 
-                background-position: center 20%;">
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-b from-black/95 via-dark/98 to-black/95"></div>
-
-        <!-- Floating Golden Particles Intensified -->
-        <div class="particle-container absolute inset-0 opacity-80"></div>
-
-        <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
-            <!-- Section Title -->
-            <h2 class="text-7xl md:text-9xl font-serif font-black gradient-text mb-20 animate-fade-in tracking-wider">
-                Official Results
-            </h2>
-
-            <!-- Trophy Podium Container -->
-            <div class="relative inline-block">
-                <!-- Golden Glow Frame -->
-                <div
-                    class="absolute -inset-4 bg-gradient-to-r from-gold via-yellow-600 to-gold opacity-60 blur-3xl animate-glow-pulse">
+    <section id="solution">
+        <div class="container">
+            <span class="text-sm">AI-Powered Regeneration</span>
+            <h2>The CompanionSoil Approach</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>Generative Soil AI</h3>
+                    <p>Real-time microbial & nutrient modeling to understand soil health at a microscopic level.</p>
                 </div>
-
-                <div
-                    class="relative bg-dark/95 backdrop-blur-2xl border-4 border-gold/60 rounded-3xl p-16 md:p-24 shadow-5xl">
-                    <!-- 1st Place – The King -->
-                    <div class="mb-16 transform hover:scale-105 transition duration-700">
-                        <div class="text-9xl md:text-10xl mb-6 animate-glow-pulse">1st</div>
-                        <p class="text-5xl md:text-7xl font-serif font-black gradient-text leading-tight">
-                            CompanionSoil AI
-                        </p>
-                        <p class="text-2xl md:text-4xl mt-4 text-gold font-light tracking-wider">
-                            Goutham Satheesh — Ulster University
-                        </p>
-                    </div>
-
-                    <!-- 2nd & 3rd – Elegant Side by Side -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-20">
-                        <div
-                            class="bg-gradient-to-br from-gray-900 to-gray-800 border border-gold/30 rounded-3xl p-10 hover:border-gold transition">
-                            <div class="text-6xl mb-4 opacity-90">2nd</div>
-                            <p class="text-3xl md:text-4xl font-serif text-gray-300 leading-tight">
-                                CircularLife
-                            </p>
-                            <p class="text-lg md:text-xl text-gray-400 mt-3">
-                                AI for Carbon Reduction & Upcycling
-                            </p>
-                            <p class="text-sm md:text-lg text-gray-500 mt-2">
-                                University of Cambridge (#3 worldwide)
-                            </p>
-                        </div>
-
-                        <div
-                            class="bg-gradient-to-br from-gray-900 to-gray-800 border border-gold/30 rounded-3xl p-10 hover:border-gold transition">
-                            <div class="text-6xl mb-4 opacity-90">3rd</div>
-                            <p class="text-3xl md:text-4xl font-serif text-gray-300 leading-tight">
-                                Re:Gen
-                            </p>
-                            <p class="text-lg md:text-xl text-gray-400 mt-3">
-                                University of Warwick
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Footer Note -->
-                    <div class="mt-20 pt-12 border-t border-gold/20">
-                        <p class="text-xl md:text-2xl font-light text-gold opacity-90">
-                            AWS Generative AI Global Hackathon 2025
-                        </p>
-                        <p class="text-lg text-gray-400 mt-4">
-                            Out of 700+ elite teams worldwide
-                        </p>
-                    </div>
+                <div class="card">
+                    <h3>50% Less Chemicals</h3>
+                    <p>Precision inputs ensure zero waste, drastically reducing reliance on synthetic fertilizers.</p>
+                </div>
+                <div class="card">
+                    <h3>30% Higher Yields</h3>
+                    <p>Data-driven growth optimization ensures farmers don't choose between sustainability and profit.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3>Planet-Scale</h3>
+                    <p>Designed for global deployment. Already modeling soil across 120+ countries.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="section-line max-w-5xl mx-auto my-32"></div>
+    <section id="victory">
+        <div class="container">
+            <span class="text-sm">Official Results</span>
+            <h2>AWS Generative AI Global Hackathon 2025</h2>
+            <div class="card" style="border-left: 4px solid var(--color-primary);">
+                <ul style="list-style: none; font-family: var(--font-body);">
+                    <li style="margin-bottom: 24px;">
+                        <span
+                            style="display: block; font-size: 1.25rem; font-weight: 700; color: var(--color-primary);">🥇
+                            1st Place — CompanionSoil AI</span>
+                        <span style="display: block; font-size: 1rem; color: var(--color-text-light);">GOUTHAM SATHEESH
+                            (Ulster University)</span>
+                    </li>
+                    <li style="margin-bottom: 24px;">
+                        <span style="display: block; font-size: 1.2rem; font-weight: 600; opacity: 0.8;">🥈 2nd Place —
+                            CircularLife</span>
+                        <span style="display: block; font-size: 0.95rem; color: var(--color-text-light);">AI for Carbon
+                            Reduction & Upcycling (University of Cambridge)</span>
+                    </li>
+                    <li style="margin-bottom: 0;">
+                        <span style="display: block; font-size: 1.2rem; font-weight: 600; opacity: 0.8;">🥉 3rd Place —
+                            Re:Gen</span>
+                        <span style="display: block; font-size: 0.95rem; color: var(--color-text-light);">University of
+                            Warwick</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
-    <!-- Founder -->
-    <section id="founder" class="relative py-40 parallax"
-        style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');">
-        <div class="absolute inset-0 bg-overlay"></div>
-        <div class="relative z-10 max-w-7xl mx-auto px-6">
-            <h2 class="text-7xl md:text-9xl font-serif font-black text-center gradient-text mb-24 animate-fade-in">The
-                Visionary</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                <div class="animate-fade-up">
-                    <img src="hero-photo.jpg" alt="Goutham Satheesh – Founder & CEO"
-                        class="rounded-3xl shadow-2xl border-8 border-gold/40 w-full object-cover">
-                </div>
-                <div class="animate-fade-up" style="animation-delay: 0.4s;">
-                    <div class="bg-dark/95 backdrop-blur-xl luxury-border p-16 rounded-3xl">
-                        <h3 class="text-6xl font-serif gradient-text mb-8">Goutham Satheesh</h3>
-                        <p class="text-4xl font-light mb-10 text-gold">Founder & CEO</p>
-                        <ul class="space-y-8 text-2xl font-light leading-relaxed">
-                            <li>19-year-old AI prodigy at Ulster University</li>
-                            <li>From Kerala, India — now global stage</li>
-                            <li>AWS Generative AI Global Champion 2025</li>
-                            <li>Beat Cambridge, Warwick, and 700+ teams</li>
-                            <li>Building the OS for planetary soil health</li>
+    <section id="founder">
+        <div class="container">
+            <div class="grid grid-2" style="align-items: center;">
+                <div>
+                    <span class="text-sm">The Visionary</span>
+                    <h2>Goutham Satheesh</h2>
+                    <h3>Founder & CEO</h3>
+                    <p style="margin-bottom: 12px;">A 19-year-old AI student at Ulster University.</p>
+
+                    <div style="margin-top: 24px; margin-bottom: 32px;">
+                        <h4
+                            style="font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+                            Certifications</h4>
+                        <ul
+                            style="list-style: none; font-size: 0.95rem; line-height: 1.8; color: var(--color-text-light);">
+                            <li>✓ Azure Certified</li>
+                            <li>✓ NVIDIA Deep Learning Certified</li>
+                            <li>✓ Amazon Prompt Engineering Certified</li>
                         </ul>
                     </div>
+
+                    <div style="display: flex; gap: 16px;">
+                        <a href="https://www.linkedin.com/in/gouthmn" target="_blank" class="btn"
+                            style="padding: 12px 24px; font-size: 0.9rem;">LinkedIn</a>
+                        <a href="https://instagram.com/companionsoil" target="_blank" class="btn"
+                            style="padding: 12px 24px; font-size: 0.9rem; background: transparent; color: var(--color-primary);">Instagram</a>
+                    </div>
+                </div>
+                <div class="founder-img-container">
+                    <img src="hero-photo.jpg" alt="Goutham Satheesh, Founder & CEO" class="founder-img">
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="section-line max-w-5xl mx-auto my-24"></div>
-
-    <!-- Investment -->
-    <section id="invest" class="py-40 bg-gradient-to-b from-earth via-dark to-dark">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-7xl md:text-9xl font-serif font-black gradient-text mb-16 animate-fade-in">Investment
-                Opportunity</h2>
-            <p class="text-3xl md:text-5xl max-w-5xl mx-auto font-light mb-20 animate-fade-in"
-                style="animation-delay: 0.5s;">
-                Validated by AWS. Backed by science. Ready to regenerate billions of hectares.
-            </p>
-            <a href="mailto:gouthmnn@gmail.com"
-                class="inline-block bg-gold hover:bg-earthlight text-dark px-20 py-8 rounded-full text-3xl font-black transition-all transform hover:scale-110 shadow-2xl animate-fade-up"
-                style="animation-delay: 1s;">
-                Request Investor Deck
-            </a>
+    <section id="invest" style="background-color: var(--color-accent);">
+        <div class="container" style="text-align: center;">
+            <span class="text-sm">Investment Opportunity</span>
+            <h2 style="font-size: clamp(2rem, 5vw, 3rem);">Ready to Regenerate Earth?</h2>
+            <p style="margin: 0 auto 40px auto;">Validated by AWS. Backed by science. Ready to regenerate billions of
+                hectares.</p>
+            <a href="mailto:gouthmnn@gmail.com" class="btn">Request Investor Deck</a>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-24 bg-dark border-t border-gold/30">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <div class="flex justify-center space-x-16 text-6xl mb-12">
-                <a href="https://www.linkedin.com/in/gouthmn" target="_blank"
-                    class="text-gold hover:text-earthlight transition transform hover:scale-125"><i
-                        class="fab fa-linkedin"></i></a>
-                <a href="https://instagram.com/companionsoil" target="_blank"
-                    class="text-gold hover:text-earthlight transition transform hover:scale-125"><i
-                        class="fab fa-instagram"></i></a>
-            </div>
-            <p class="text-xl font-light opacity-80">© 2025 CompanionSoil AI — All Rights Reserved</p>
-            <p class="text-sm mt-4 opacity-60">companionsoil.com</p>
+    <footer>
+        <div class="container" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <div class="logo" style="margin-bottom: 24px; color: white;">CompanionSoil AI</div>
+            <p style="text-align: center; margin-bottom: 0;">&copy; 2025 CompanionSoil AI — All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- Particle Engine -->
     <script>
-        const container = document.querySelector('.particle-container');
-        for (let i = 0; i < 100; i++) {
-            const p = document.createElement('div');
-            p.classList.add('particle');
-            p.style.width = p.style.height = Math.random() * 10 + 5 + 'px';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.setProperty('--duration', Math.random() * 40 + 30 + 's');
-            p.style.animationDelay = Math.random() * 20 + 's';
-            p.style.opacity = Math.random() * 0.6 + 0.2;
-            container.appendChild(p);
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const branches = document.querySelectorAll('.growth-branch');
+            const leaves = document.querySelectorAll('.tree-leaf');
 
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+            // 1. Setup Branches (Dash offset)
+            branches.forEach(path => {
+                const length = path.getTotalLength();
+                path.style.strokeDasharray = length;
+                path.style.strokeDashoffset = length;
             });
+
+            // 2. Setup Leaves (Scale 0)
+            leaves.forEach(leaf => {
+                leaf.style.transform = 'scale(0)';
+            });
+
+            function updateGrowth() {
+                // Calculate scroll percentage (0 to 1)
+                const docHeight = document.body.scrollHeight - window.innerHeight;
+                const scrollPos = window.scrollY;
+                let scrollPercent = scrollPos / docHeight;
+
+                // Allow it to grow slightly past 100% just in case of bounce
+                scrollPercent = Math.min(Math.max(scrollPercent, 0), 1);
+
+                // Update Branches
+                branches.forEach(path => {
+                    const start = parseFloat(path.dataset.start || 0);
+                    const speed = parseFloat(path.dataset.speed || 1);
+                    const length = path.getTotalLength();
+
+                    // Normalize the scroll percent for this specific branch
+                    // It starts growing at 'start', and grows 'speed' times faster than scroll
+                    let progress = (scrollPercent - start) * speed * 2.5; // multiplier to ensure full growth
+                    progress = Math.min(Math.max(progress, 0), 1);
+
+                    path.style.strokeDashoffset = length * (1 - progress);
+                });
+
+                // Update Leaves (Bloom)
+                leaves.forEach(leaf => {
+                    const trigger = parseFloat(leaf.dataset.trigger || 0.5);
+
+                    if (scrollPercent > trigger) {
+                        // Calculate bloom progress (quick pop up)
+                        let bloom = (scrollPercent - trigger) * 10;
+                        bloom = Math.min(bloom, 1);
+
+                        leaf.style.opacity = bloom;
+                        leaf.style.transform = `scale(${bloom})`;
+                    } else {
+                        leaf.style.opacity = 0;
+                        leaf.style.transform = 'scale(0)';
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', () => {
+                requestAnimationFrame(updateGrowth);
+            });
+
+            // Initial render
+            updateGrowth();
         });
     </script>
 </body>
-
 
 </html>
 
