@@ -55,16 +55,21 @@
             height: 100vh;
             pointer-events: none;
             z-index: -1;
-            opacity: 0.15;
-            /* Subtle branding */
+            opacity: 0.12;
+            /* Subtler for neo-luxury feel */
+        }
+
+        .growth-path {
+            stroke: var(--color-primary);
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
         }
 
         .tree-leaf {
-            transform-box: fill-box;
-            transform-origin: center center;
+            fill: var(--color-primary);
             opacity: 0;
-            transition: opacity 0.3s ease-out;
-            /* Smooth fade in */
+            transform-origin: center;
         }
 
         /* --- Typography --- */
@@ -296,49 +301,44 @@
 <body>
 
     <!-- 
-      Enhanced SVG: A more complex, organic tree structure.
-      ViewBox 0 0 800 800. 
-      Positions mapped to ensure it grows from bottom-right (approx 800,800) upwards/leftwards.
+      High-Fidelity Organic Tree SVG
+      Start: Bottom-Right corner
+      Direction: Growing towards Top-Left
     -->
-    <svg id="growth-canvas" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
-        <g stroke="#1B4D3E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <svg id="growth-canvas" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+        <!-- Roots (Hidden slightly off screen) -->
+        <g id="roots" class="growth-group">
+            <path class="growth-path root" d="M 900 1000 C 880 950, 920 920, 900 880" stroke-width="6" />
+            <path class="growth-path root" d="M 900 980 C 950 970, 980 950, 1000 940" stroke-width="4" />
+            <path class="growth-path root" d="M 910 990 C 850 980, 800 990, 750 1000" stroke-width="4" />
+        </g>
 
-            <!-- MAIN TRUNK: Curving from bottom-right towards center-left -->
-            <path class="growth-branch" data-start="0.0" data-speed="1.0"
-                d="M 850 850 C 700 700, 600 600, 400 300 C 350 200, 300 100, 100 50" stroke-width="3" />
+        <!-- Main Trunk -->
+        <path id="main-trunk" class="growth-path" d="M 900 880 C 850 750, 750 600, 500 450 C 350 350, 250 200, 150 50"
+            stroke-width="12" />
 
-            <!-- BRANCH 1 (Lower Right) -->
-            <path class="growth-branch" data-start="0.1" data-speed="1.2" d="M 650 650 C 750 550, 800 400, 750 300" />
-            <!-- Leaves for B1 -->
-            <path class="tree-leaf" data-trigger="0.3" d="M 750 300 c -2 -4 -6 -6 -10 -6 c 4 10 6 14 10 6 z"
-                fill="#1B4D3E" stroke="none" />
-            <path class="tree-leaf" data-trigger="0.32" d="M 780 400 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
-                fill="#1B4D3E" stroke="none" />
+        <!-- Primary Branches -->
+        <g id="branches">
+            <!-- Lower Branch -->
+            <path class="growth-path branch" d="M 700 650 C 750 600, 850 550, 900 450" stroke-width="6" />
+            <path class="growth-path branch" d="M 820 520 C 850 480, 880 480, 920 490" stroke-width="3" />
 
-            <!-- BRANCH 2 (Mid Left) -->
-            <path class="growth-branch" data-start="0.2" data-speed="1.3" d="M 500 450 C 400 450, 200 500, 150 400" />
-            <!-- Leaves for B2 -->
-            <path class="tree-leaf" data-trigger="0.45" d="M 150 400 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
-                fill="#1B4D3E" stroke="none" />
-            <path class="tree-leaf" data-trigger="0.48" d="M 250 480 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
-                fill="#1B4D3E" stroke="none" />
+            <!-- Middle Branch -->
+            <path class="growth-path branch" d="M 550 480 C 450 480, 350 550, 250 580" stroke-width="5" />
+            <path class="growth-path branch" d="M 380 525 C 320 540, 300 580, 280 620" stroke-width="3" />
 
-            <!-- BRANCH 3 (Upper Center) -->
-            <path class="growth-branch" data-start="0.4" data-speed="1.5" d="M 400 300 C 450 200, 550 150, 600 100" />
-            <!-- Leaves for B3 -->
-            <path class="tree-leaf" data-trigger="0.65" d="M 600 100 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
-                fill="#1B4D3E" stroke="none" />
-            <path class="tree-leaf" data-trigger="0.7" d="M 500 180 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
-                fill="#1B4D3E" stroke="none" />
+            <!-- Upper Branch -->
+            <path class="growth-path branch" d="M 350 280 C 450 250, 550 220, 650 150" stroke-width="4" />
+            <path class="growth-path branch" d="M 500 235 C 550 200, 580 180, 600 120" stroke-width="2" />
 
-            <!-- BRANCH 4 (Top Left Finisher) -->
-            <path class="growth-branch" data-start="0.5" data-speed="1.4" d="M 300 100 C 200 50, 100 50, 50 20" />
-            <!-- Leaves for B4 -->
-            <path class="tree-leaf" data-trigger="0.8" d="M 50 20 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z" fill="#1B4D3E"
-                stroke="none" />
-            <path class="tree-leaf" data-trigger="0.85" d="M 150 60 c 0 -8 -4 -12 -8 -12 c 4 8 6 12 8 12 z"
-                fill="#1B4D3E" stroke="none" />
+            <!-- Top Crown -->
+            <path class="growth-path branch" d="M 220 150 C 180 120, 150 130, 100 100" stroke-width="3" />
+            <path class="growth-path branch" d="M 180 80 C 150 50, 150 30, 180 0" stroke-width="3" />
+        </g>
 
+        <!-- Leaves -->
+        <g id="leaves">
+            <!-- Dynamically populated by JS for organic procedural density -->
         </g>
     </svg>
 
@@ -517,75 +517,163 @@
         </div>
     </footer>
 
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
     <script>
+        gsap.registerPlugin(ScrollTrigger);
+
         document.addEventListener('DOMContentLoaded', () => {
-            const branches = document.querySelectorAll('.growth-branch');
-            const leaves = document.querySelectorAll('.tree-leaf');
+            const leafGroup = document.getElementById('leaves');
+            const branches = document.querySelectorAll('.growth-path'); // Select all potential growth paths
 
-            // 1. Setup Branches (Dash offset)
-            branches.forEach(path => {
-                const length = path.getTotalLength();
-                path.style.strokeDasharray = length;
-                path.style.strokeDashoffset = length;
-            });
+            // --- Procedural Leaf Generation Details ---
+            // "Neo-luxury" Leaf Shape: Clean, almond/eye shape, slightly organic.
+            // Using a path definition that is centered at 0,0 for easy rotation.
+            const leafPathD = "M 0 0 Q 8 -10 16 0 Q 8 10 0 0"; // Simple, elegant leaf
 
-            // 2. Setup Leaves (Scale 0)
-            leaves.forEach(leaf => {
-                leaf.style.transform = 'scale(0)';
-            });
+            function generateLeaves() {
+                // Clear existing static leaves if any (though we removed them in HTML)
+                leafGroup.innerHTML = '';
 
-            function updateGrowth() {
-                // Calculate scroll percentage (0 to 1)
-                const docHeight = document.body.scrollHeight - window.innerHeight;
-                const scrollPos = window.scrollY;
-                let scrollPercent = scrollPos / docHeight;
-
-                // Allow it to grow slightly past 100% just in case of bounce
-                scrollPercent = Math.min(Math.max(scrollPercent, 0), 1);
-
-                // Update Branches
                 branches.forEach(path => {
-                    const start = parseFloat(path.dataset.start || 0);
-                    const speed = parseFloat(path.dataset.speed || 1);
+                    // Skip roots, only grow on trunk and branches
+                    if (path.classList.contains('root')) return;
+
                     const length = path.getTotalLength();
+                    const isTrunk = path.id === 'main-trunk';
 
-                    // Normalize the scroll percent for this specific branch
-                    // It starts growing at 'start', and grows 'speed' times faster than scroll
-                    let progress = (scrollPercent - start) * speed * 2.5; // multiplier to ensure full growth
-                    progress = Math.min(Math.max(progress, 0), 1);
+                    // Density Settings
+                    // Trunk: Leaves only at the very top (last 20%)
+                    // Branches: Leaves along the last 60-70%
+                    const startPercent = isTrunk ? 0.85 : 0.3;
 
-                    path.style.strokeDashoffset = length * (1 - progress);
-                });
+                    // Step size: Lower = more dense. Randomize slightly.
+                    const stepBase = isTrunk ? 30 : 20;
 
-                // Update Leaves (Bloom)
-                leaves.forEach(leaf => {
-                    const trigger = parseFloat(leaf.dataset.trigger || 0.5);
+                    for (let l = length * startPercent; l < length; l += (stepBase + Math.random() * 15)) {
+                        const point = path.getPointAtLength(l);
+                        const nextPoint = path.getPointAtLength(Math.min(l + 1, length));
 
-                    if (scrollPercent > trigger) {
-                        // Calculate bloom progress (quick pop up)
-                        let bloom = (scrollPercent - trigger) * 10;
-                        bloom = Math.min(bloom, 1);
+                        // Calculate angle of the branch at this point
+                        const branchAngle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * (180 / Math.PI);
 
-                        leaf.style.opacity = bloom;
-                        leaf.style.transform = `scale(${bloom})`;
-                    } else {
-                        leaf.style.opacity = 0;
-                        leaf.style.transform = 'scale(0)';
+                        // CLUSTERING: Spawn multiple leaves at this node
+                        const clusterSize = Math.floor(Math.random() * 3) + 3; // 3 to 5 leaves per cluster
+
+                        for (let i = 0; i < clusterSize; i++) {
+                            const leaf = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+                            // Randomize Leaf Attributes
+
+                            // Rotation: Branch angle + random spread (-60 to +60 degrees usually looks natural)
+                            // "Bloom outward" feel
+                            const rotationOffset = (Math.random() * 140) - 70;
+                            const rotation = branchAngle + rotationOffset;
+
+                            // Scale: Vary for depth (0.5 to 1.3)
+                            const targetScale = 0.6 + Math.random() * 0.8;
+                            leaf.dataset.targetScale = targetScale; // Store for GSAP
+
+                            // Position Jitter
+                            const jitterX = (Math.random() * 20) - 10;
+                            const jitterY = (Math.random() * 20) - 10;
+
+                            // Opacity
+                            const opacity = 0.6 + Math.random() * 0.4;
+
+                            leaf.setAttribute('d', leafPathD);
+                            leaf.setAttribute('class', 'tree-leaf');
+                            leaf.setAttribute('fill', '#1B4D3E');
+                            leaf.setAttribute('fill-opacity', opacity); // Initial opacity, GSAP will handle fade in
+
+                            // Set initial Transform: Correct Position + Rotation, but SCALE 0 for the animation start
+                            // Actually, GSAP 'from' is easier. let's set the FINAL transform here (without scale being 0).
+                            // Wait, if I set scale in transform string, GSAP overwrites it?
+                            // Safest way: Set translate and rotate in transform. Set Scale to 0 via GSAP setter initially.
+                            leaf.setAttribute('transform', `translate(${point.x + jitterX}, ${point.y + jitterY}) rotate(${rotation})`);
+
+                            leafGroup.appendChild(leaf);
+                        }
                     }
                 });
             }
 
-            window.addEventListener('scroll', () => {
-                requestAnimationFrame(updateGrowth);
+            // GENERATE THE CANOPY
+            generateLeaves();
+
+            // --- Animation Logic ---
+            const paths = document.querySelectorAll('.growth-path');
+            const leaves = document.querySelectorAll('.tree-leaf');
+
+            // Set up initial state for paths
+            paths.forEach(path => {
+                const length = path.getTotalLength();
+                gsap.set(path, {
+                    strokeDasharray: length,
+                    strokeDashoffset: length
+                });
             });
 
-            // Initial render
-            updateGrowth();
+            // Set up initial state for leaves
+            leaves.forEach(leaf => {
+                gsap.set(leaf, {
+                    scale: 0,
+                    opacity: 0,
+                    transformOrigin: "50% 50%"
+                });
+            });
+
+            // Master Timeline
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "body",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1.5,
+                    markers: false
+                }
+            });
+
+            // 1. Roots
+            tl.to(".root", {
+                strokeDashoffset: 0,
+                duration: 1,
+                stagger: 0.1,
+                ease: "power1.inOut"
+            }, "start");
+
+            // 2. Trunk
+            tl.to("#main-trunk", {
+                strokeDashoffset: 0,
+                duration: 4,
+                ease: "power1.inOut"
+            }, "start+=0.5");
+
+            // 3. Branches
+            tl.to(".branch", {
+                strokeDashoffset: 0,
+                duration: 3,
+                stagger: 0.2,
+                ease: "power1.out"
+            }, "start+=2");
+
+            // 4. Leaves (Massive Bloom)
+            tl.to(leaves, {
+                // GSAP Function-based value to retrieve the random scale we generated
+                scale: (i, target) => target.dataset.targetScale || 1,
+                opacity: (i, target) => target.getAttribute('fill-opacity') || 1, // Fade to the target opacity
+                duration: 2,
+                stagger: {
+                    amount: 3,
+                    from: "random"
+                },
+                ease: "back.out(1.5)"
+            }, "start+=2.5"); // Start blooming while branches are still growing
         });
     </script>
 </body>
 
 </html>
-
-
 
