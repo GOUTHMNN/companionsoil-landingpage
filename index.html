@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CompanionSoil AI — Regenerating Earth with AI</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+
+    <!-- SEO Meta -->
+    <meta name="description"
+        content="CompanionSoil AI reduces chemical fertilizer usage by up to 50%, restores microbial ecosystems, and increases crop productivity. AWS Champion 2025.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #F4F4F0;
+            --color-text: #1a1a1a;
+            --color-text-light: #555555;
+            --color-primary: #1B4D3E;
+            --color-accent: #E8EBE4;
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Manrope', sans-serif;
+            --max-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Scroll Animation Layer --- */
+        #growth-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.12;
+            /* Subtler for neo-luxury feel */
+        }
+
+        .growth-path {
+            stroke: var(--color-primary);
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .tree-leaf {
+            fill: var(--color-primary);
+            opacity: 0;
+            transform-origin: center;
+        }
+
+        /* --- Typography --- */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-display);
+            color: var(--color-primary);
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            margin-bottom: 32px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 1.125rem;
+            color: var(--color-text-light);
+            margin-bottom: 24px;
+            max-width: 650px;
+        }
+
+        .text-lead {
+            font-size: clamp(1.25rem, 4vw, 1.5rem);
+            color: var(--color-text);
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-primary);
+            margin-bottom: 12px;
+            display: block;
+            font-weight: 600;
+        }
+
+        /* --- Layout --- */
+        section {
+            padding: 100px 24px;
+            position: relative;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            gap: 40px;
+        }
+
+        /* Desktop defaults */
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 20px;
+            }
+
+            /* Reduce padding */
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            /* Stack everything */
+
+            /* Adjust Tree for Mobile */
+            #growth-canvas {
+                opacity: 0.1;
+                /* Even subtler on phone to avoid text conflict */
+            }
+        }
+
+        /* --- Components --- */
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background-color: var(--color-primary);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-primary);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--color-primary);
+        }
+
+        .card {
+            padding: 32px;
+            border-top: 1px solid rgba(27, 77, 62, 0.2);
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--color-primary);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* --- Sections --- */
+        header {
+            padding: 32px 24px;
+            /* Sticky header for better UX on long scroll */
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(244, 244, 240, 0.9);
+            /* Blur/Transparent bg */
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding-top: 140px;
+        }
+
+        .quote-section {
+            background-color: var(--color-accent);
+            text-align: center;
+        }
+
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: clamp(1.25rem, 3vw, 2.2rem);
+            font-style: italic;
+            color: var(--color-primary);
+        }
+
+        footer {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Founder Image Styling */
+        .founder-img-container {
+            position: relative;
+            margin-top: 40px;
+        }
+
+        .founder-img {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 3/4;
+            /* Portrait ratio assumption for headshots */
+            object-fit: cover;
+            border-radius: 2px;
+            /* Neo-luxury offset frame effect using box-shadow */
+            box-shadow: 20px 20px 0 rgba(232, 235, 228, 1),
+                /* Matches -color-accent */
+                20px 20px 0 2px var(--color-primary);
+            /* Thin border on the offset */
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+
+        .founder-img:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 25px 25px 0 rgba(232, 235, 228, 1),
+                25px 25px 0 2px var(--color-primary);
+        }
+
+        /* Reusing the neo-luxury style for the book cover */
+        .book-img {
+            width: 100%;
+            max-width: 350px;
+            /* Slightly smaller than founder image */
+            aspect-ratio: 2/3;
+            /* Standard book ratio */
+            object-fit: cover;
+            border-radius: 2px;
+            box-shadow: 20px 20px 0 rgba(232, 235, 228, 1),
+                20px 20px 0 2px var(--color-primary);
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+
+        .book-img:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 25px 25px 0 rgba(232, 235, 228, 1),
+                25px 25px 0 2px var(--color-primary);
+        }
+
+        @media (min-width: 768px) {
+            .founder-img-container {
+                margin-top: 0;
+                display: flex;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 
+      High-Fidelity Organic Tree SVG
+      Start: Bottom-Right corner
+      Direction: Growing towards Top-Left
+    -->
+    <svg id="growth-canvas" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+        <!-- Roots (Hidden slightly off screen) -->
+        <g id="roots" class="growth-group">
+            <path class="growth-path root" d="M 900 1000 C 880 950, 920 920, 900 880" stroke-width="6" />
+            <path class="growth-path root" d="M 900 980 C 950 970, 980 950, 1000 940" stroke-width="4" />
+            <path class="growth-path root" d="M 910 990 C 850 980, 800 990, 750 1000" stroke-width="4" />
+        </g>
+
+        <!-- Main Trunk -->
+        <path id="main-trunk" class="growth-path" d="M 900 880 C 850 750, 750 600, 500 450 C 350 350, 250 200, 150 50"
+            stroke-width="12" />
+
+        <!-- Primary Branches -->
+        <g id="branches">
+            <!-- Lower Branch -->
+            <path class="growth-path branch" d="M 700 650 C 750 600, 850 550, 900 450" stroke-width="6" />
+            <path class="growth-path branch" d="M 820 520 C 850 480, 880 480, 920 490" stroke-width="3" />
+
+            <!-- Middle Branch -->
+            <path class="growth-path branch" d="M 550 480 C 450 480, 350 550, 250 580" stroke-width="5" />
+            <path class="growth-path branch" d="M 380 525 C 320 540, 300 580, 280 620" stroke-width="3" />
+
+            <!-- Upper Branch -->
+            <path class="growth-path branch" d="M 350 280 C 450 250, 550 220, 650 150" stroke-width="4" />
+            <path class="growth-path branch" d="M 500 235 C 550 200, 580 180, 600 120" stroke-width="2" />
+
+            <!-- Top Crown -->
+            <path class="growth-path branch" d="M 220 150 C 180 120, 150 130, 100 100" stroke-width="3" />
+            <path class="growth-path branch" d="M 180 80 C 150 50, 150 30, 180 0" stroke-width="3" />
+        </g>
+
+        <!-- Leaves -->
+        <g id="leaves">
+            <!-- Dynamically populated by JS for organic procedural density -->
+        </g>
+    </svg>
+
+    <header>
+        <div class="logo">
+            <svg class="logo-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="header-glow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#1B4D3E" stop-opacity="0.3" />
+                        <stop offset="100%" stop-color="#1B4D3E" stop-opacity="0" />
+                    </radialGradient>
+                </defs>
+                <circle cx="32" cy="32" r="32" fill="url(#header-glow)" />
+                <path d="M32 58v-8C18 50 12 30 32 4c20 26 14 46 0 46z" fill="#1B4D3E" />
+                <path d="M32 50V14" stroke="#F4F4F0" stroke-width="0.5" stroke-opacity="0.4" fill="none" />
+            </svg>
+            CompanionSoil AI
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <span class="text-sm">AWS Champion 2025</span>
+            <h1>Soil Is Infrastructure</h1>
+            <p class="text-lead">The core problem is simple but urgent: soil degradation threatens every aspect of life
+                on Earth. If soil collapses, life itself collapses.</p>
+            <br>
+            <p>CompanionSoil AI reduces chemical fertilizer usage by up to 50%, restores microbial ecosystems, and
+                increases crop productivity — all while lowering costs for farmers.</p>
+            <br>
+            <a href="mailto:invest@companionsoil.com" class="btn">Request Investor Deck</a>
+        </div>
+    </section>
+
+    <section class="quote-section">
+        <div class="container">
+            <blockquote class="quote-text">
+                “This is not incremental improvement. This is a paradigm shift. Most people treat soil like dirt. I
+                treat it like the most critical infrastructure on the planet.”
+            </blockquote>
+            <span class="quote-author">— Goutham Satheesh, Founder</span>
+        </div>
+    </section>
+
+    <section id="crisis">
+        <div class="container">
+            <span class="text-sm">The Silent Collapse</span>
+            <h2>Losing Soil Faster Than Nature Rebuilds</h2>
+            <p>We are losing soil 40 times faster than nature can rebuild it. The cost of inaction is catastrophic.</p>
+
+            <div class="grid grid-3" style="margin-top: 60px;">
+                <div class="card">
+                    <span class="stat-number">24B</span>
+                    <h4>Tons of Soil Lost</h4>
+                    <p style="font-size: 0.9rem;">Fertile soil lost every year globally.</p>
+                </div>
+                <div class="card">
+                    <span class="stat-number">$400B</span>
+                    <h4>Economic Damage</h4>
+                    <p style="font-size: 0.9rem;">Annual global loss due to degradation.</p>
+                </div>
+                <div class="card">
+                    <span class="stat-number">60</span>
+                    <h4>Harvests Left</h4>
+                    <p style="font-size: 0.9rem;">Before farmland becomes critically barren.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="solution">
+        <div class="container">
+            <span class="text-sm">AI-Powered Regeneration</span>
+            <h2>The CompanionSoil Approach</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h3>Generative Soil AI</h3>
+                    <p>Real-time microbial & nutrient modeling to understand soil health at a microscopic level.</p>
+                </div>
+                <div class="card">
+                    <h3>50% Less Chemicals</h3>
+                    <p>Precision inputs ensure zero waste, drastically reducing reliance on synthetic fertilizers.</p>
+                </div>
+                <div class="card">
+                    <h3>30% Higher Yields</h3>
+                    <p>Data-driven growth optimization ensures farmers don't choose between sustainability and profit.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3>Planet-Scale</h3>
+                    <p>Designed for global deployment. Already modeling soil across 120+ countries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="victory">
+        <div class="container">
+            <span class="text-sm">Official Results</span>
+            <h2>AWS Generative AI Hackathon 2025</h2>
+            <div class="card" style="border-left: 4px solid var(--color-primary);">
+                <ul style="list-style: none; font-family: var(--font-body);">
+                    <li style="margin-bottom: 24px;">
+                        <span
+                            style="display: block; font-size: 1.25rem; font-weight: 700; color: var(--color-primary);">🥇
+                            1st Place — CompanionSoil AI</span>
+                        <span style="display: block; font-size: 1rem; color: var(--color-text-light);">GOUTHAM SATHEESH
+                            (Ulster University)</span>
+                    </li>
+                    <li style="margin-bottom: 24px;">
+                        <span style="display: block; font-size: 1.2rem; font-weight: 600; opacity: 0.8;">🥈 2nd Place —
+                            CircularLife</span>
+                        <span style="display: block; font-size: 0.95rem; color: var(--color-text-light);">AI for Carbon
+                            Reduction & Upcycling (University of Cambridge)</span>
+                    </li>
+                    <li style="margin-bottom: 0;">
+                        <span style="display: block; font-size: 1.2rem; font-weight: 600; opacity: 0.8;">🥉 3rd Place —
+                            Re:Gen</span>
+                        <span style="display: block; font-size: 0.95rem; color: var(--color-text-light);">University of
+                            Warwick</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="founder">
+        <div class="container">
+            <div class="grid grid-2" style="align-items: center;">
+                <div>
+                    <span class="text-sm">The Visionary</span>
+                    <h2>Goutham Satheesh</h2>
+                    <h3>Founder & CEO</h3>
+                    <p style="margin-bottom: 12px;">A 19-year-old AI student at Ulster University.</p>
+
+                    <div style="margin-top: 24px; margin-bottom: 32px;">
+                        <h4
+                            style="font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">
+                            Certifications</h4>
+                        <ul
+                            style="list-style: none; font-size: 0.95rem; line-height: 1.8; color: var(--color-text-light);">
+                            <li>✓ Azure Certified</li>
+                            <li>✓ NVIDIA Deep Learning Certified</li>
+                            <li>✓ Amazon Prompt Engineering Certified</li>
+                        </ul>
+                    </div>
+
+                    <div style="display: flex; gap: 16px;">
+                        <a href="https://www.linkedin.com/in/gouthmn" target="_blank" class="btn"
+                            style="padding: 12px 24px; font-size: 0.9rem;">LinkedIn</a>
+                        <a href="https://instagram.com/companionsoil" target="_blank" class="btn"
+                            style="padding: 12px 24px; font-size: 0.9rem; background: transparent; color: var(--color-primary);">Instagram</a>
+                    </div>
+                </div>
+                <div class="founder-img-container">
+                    <img src="hero-photo.jpg" alt="Goutham Satheesh, Founder & CEO" class="founder-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="book">
+        <div class="container">
+            <div class="grid grid-2" style="align-items: center;">
+                <div>
+                    <span class="text-sm">Coming Soon</span>
+                    <h2>Soil Is Infrastructure</h2>
+                    <p style="margin-bottom: 32px;">The definite guide to understanding how soil collapse shapes our
+                        economic future—and how AI can reverse it.</p>
+
+                    <ul style="list-style: none; margin-bottom: 32px;">
+                        <li
+                            style="margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; color: var(--color-text);">
+                            <span style="color: var(--color-primary); font-weight: bold;">✓</span>
+                            <span>The power of the human mind - awareness, growth, and inner transformation.</span>
+                        </li>
+                        <li
+                            style="margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; color: var(--color-text);">
+                            <span style="color: var(--color-primary); font-weight: bold;">✓</span>
+                            <span>Life lessons that shape purpose and conscious decision-making.</span>
+                        </li>
+                        <li
+                            style="margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; color: var(--color-text);">
+                            <span style="color: var(--color-primary); font-weight: bold;">✓</span>
+                            <span>Artificial intelligence and ethics in shaping the future of humanity.</span>
+                        </li>
+                        <li
+                            style="margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; color: var(--color-text);">
+                            <span style="color: var(--color-primary); font-weight: bold;">✓</span>
+                            <span>Sustainability and innovation as the foundation for a better world.</span>
+                        </li>
+                    </ul>
+
+                    <a href="#" class="btn">Join Waitlist</a>
+                </div>
+                <div class="founder-img-container">
+                    <img src="book.jpg" alt="Soil Is Infrastructure Book Cover" class="book-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="invest" style="background-color: var(--color-accent);">
+        <div class="container" style="text-align: center;">
+            <span class="text-sm">Investment Opportunity</span>
+            <h2 style="font-size: clamp(2rem, 5vw, 3rem);">Ready to Regenerate Earth?</h2>
+            <p style="margin: 0 auto 40px auto;">Validated by AWS. Backed by science. Ready to regenerate billions of
+                hectares.</p>
+            <a href="mailto:invest@companionsoil.com" class="btn">Request Investor Deck</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <div class="logo" style="margin-bottom: 24px; color: white;">CompanionSoil AI</div>
+            <p style="text-align: center; margin-bottom: 0;">&copy; 2026 CompanionSoil AI — All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const leafGroup = document.getElementById('leaves');
+            const branches = document.querySelectorAll('.growth-path'); // Select all potential growth paths
+
+            // --- Procedural Leaf Generation Details ---
+            // "Neo-luxury" Leaf Shape: Clean, almond/eye shape, slightly organic.
+            // Using a path definition that is centered at 0,0 for easy rotation.
+            const leafPathD = "M 0 0 Q 8 -10 16 0 Q 8 10 0 0"; // Simple, elegant leaf
+
+            function generateLeaves() {
+                // Clear existing static leaves if any (though we removed them in HTML)
+                leafGroup.innerHTML = '';
+
+                branches.forEach(path => {
+                    // Skip roots, only grow on trunk and branches
+                    if (path.classList.contains('root')) return;
+
+                    const length = path.getTotalLength();
+                    const isTrunk = path.id === 'main-trunk';
+
+                    // Density Settings
+                    // Trunk: Leaves only at the very top (last 20%)
+                    // Branches: Leaves along the last 60-70%
+                    const startPercent = isTrunk ? 0.85 : 0.3;
+
+                    // Step size: Lower = more dense. Randomize slightly.
+                    const stepBase = isTrunk ? 30 : 20;
+
+                    for (let l = length * startPercent; l < length; l += (stepBase + Math.random() * 15)) {
+                        const point = path.getPointAtLength(l);
+                        const nextPoint = path.getPointAtLength(Math.min(l + 1, length));
+
+                        // Calculate angle of the branch at this point
+                        const branchAngle = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * (180 / Math.PI);
+
+                        // CLUSTERING: Spawn multiple leaves at this node
+                        const clusterSize = Math.floor(Math.random() * 3) + 3; // 3 to 5 leaves per cluster
+
+                        for (let i = 0; i < clusterSize; i++) {
+                            const leaf = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+                            // Randomize Leaf Attributes
+
+                            // Rotation: Branch angle + random spread (-60 to +60 degrees usually looks natural)
+                            // "Bloom outward" feel
+                            const rotationOffset = (Math.random() * 140) - 70;
+                            const rotation = branchAngle + rotationOffset;
+
+                            // Scale: Vary for depth (0.5 to 1.3)
+                            const targetScale = 0.6 + Math.random() * 0.8;
+                            leaf.dataset.targetScale = targetScale; // Store for GSAP
+
+                            // Position Jitter
+                            const jitterX = (Math.random() * 20) - 10;
+                            const jitterY = (Math.random() * 20) - 10;
+
+                            // Opacity
+                            const opacity = 0.6 + Math.random() * 0.4;
+
+                            leaf.setAttribute('d', leafPathD);
+                            leaf.setAttribute('class', 'tree-leaf');
+                            leaf.setAttribute('fill', '#1B4D3E');
+                            leaf.setAttribute('fill-opacity', opacity); // Initial opacity, GSAP will handle fade in
+
+                            // Set initial Transform: Correct Position + Rotation, but SCALE 0 for the animation start
+                            // Actually, GSAP 'from' is easier. let's set the FINAL transform here (without scale being 0).
+                            // Wait, if I set scale in transform string, GSAP overwrites it?
+                            // Safest way: Set translate and rotate in transform. Set Scale to 0 via GSAP setter initially.
+                            leaf.setAttribute('transform', `translate(${point.x + jitterX}, ${point.y + jitterY}) rotate(${rotation})`);
+
+                            leafGroup.appendChild(leaf);
+                        }
+                    }
+                });
+            }
+
+            // GENERATE THE CANOPY
+            generateLeaves();
+
+            // --- Animation Logic ---
+            const paths = document.querySelectorAll('.growth-path');
+            const leaves = document.querySelectorAll('.tree-leaf');
+
+            // Set up initial state for paths
+            paths.forEach(path => {
+                const length = path.getTotalLength();
+                gsap.set(path, {
+                    strokeDasharray: length,
+                    strokeDashoffset: length
+                });
+            });
+
+            // Set up initial state for leaves
+            leaves.forEach(leaf => {
+                gsap.set(leaf, {
+                    scale: 0,
+                    opacity: 0,
+                    transformOrigin: "50% 50%"
+                });
+            });
+
+            // Master Timeline
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "body",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1.5,
+                    markers: false
+                }
+            });
+
+            // 1. Roots
+            tl.to(".root", {
+                strokeDashoffset: 0,
+                duration: 1,
+                stagger: 0.1,
+                ease: "power1.inOut"
+            }, "start");
+
+            // 2. Trunk
+            tl.to("#main-trunk", {
+                strokeDashoffset: 0,
+                duration: 4,
+                ease: "power1.inOut"
+            }, "start+=0.5");
+
+            // 3. Branches
+            tl.to(".branch", {
+                strokeDashoffset: 0,
+                duration: 3,
+                stagger: 0.2,
+                ease: "power1.out"
+            }, "start+=2");
+
+            // 4. Leaves (Massive Bloom)
+            tl.to(leaves, {
+                // GSAP Function-based value to retrieve the random scale we generated
+                scale: (i, target) => target.dataset.targetScale || 1,
+                opacity: (i, target) => target.getAttribute('fill-opacity') || 1, // Fade to the target opacity
+                duration: 2,
+                stagger: {
+                    amount: 3,
+                    from: "random"
+                },
+                ease: "back.out(1.5)"
+            }, "start+=2.5"); // Start blooming while branches are still growing
+        });
+    </script>
+</body>
+
+</html>
